@@ -17,14 +17,10 @@ const postsByYear = sortedPosts.reduce((acc, post) => {
 
 const years = Object.keys(postsByYear).sort((a, b) => b - a);
 
-// Get total post count
-const totalPosts = sortedPosts.length;
-
-// Get unique tags for search suggestions
-const allTags = [...new Set(sortedPosts.flatMap(post => post.data.tags || []))];
+// Removed unused allTags variable
 ---
 
-<BaseLayout title="Blog">
+<BaseLayout title="JK.dev">
   <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
     <!-- Enhanced header with search - improved responsive spacing -->
     <div class="relative mb-12 sm:mb-20">
@@ -141,7 +137,7 @@ const allTags = [...new Set(sortedPosts.flatMap(post => post.data.tags || []))];
             </h2>
             
             <div class={`grid grid-cols-1 ${postsByYear[year].length >= 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'} gap-8 sm:gap-12`}>
-              {postsByYear[year].map((post, index) => (
+              {postsByYear[year].map((post) => (
                 <article class="group relative flex flex-col h-full mx-auto md:mx-0 w-full max-w-sm sm:max-w-md">
                   {post.data.heroImage && (
                     <div class="h-48 sm:h-56 overflow-hidden mb-4 rounded-lg">
