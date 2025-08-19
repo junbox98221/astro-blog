@@ -40,15 +40,12 @@ React 컴포넌트, Tailwind CSS, MDX 지원을 포함한 **Astro.js 블로그**
 
 ### 주요 기능
 - **콘텐츠 컬렉션**: 타입 안전한 블로그 포스트 관리
-- **RSS 피드**: `/rss.xml`에서 자동 생성 
 - **태그 시스템**: 동적 태그 페이지 및 필터링
 - **테마 전환**: 부드러운 전환 효과를 가진 클라이언트 사이드 다크/라이트 모드
 - **SPA 전환**: 라우트 간 부드러운 페이지 내비게이션
 - **SEO 최적화**: 메타 태그, Open Graph, 구조화된 데이터
 
 ### 환경 구성
-- "현재 재생 중" 기능을 위한 Spotify 통합 (선택사항)
-- 환경 변수: SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN
 - Vercel 배포 대 로컬 개발을 위해 동적으로 구성되는 사이트 URL
 
 ### 파일 구조 패턴
