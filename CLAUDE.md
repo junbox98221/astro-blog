@@ -46,8 +46,6 @@ React 컴포넌트, Tailwind CSS, MDX 지원을 포함한 **Astro.js 블로그**
 - **SEO 최적화**: 메타 태그, Open Graph, 구조화된 데이터
 
 ### 환경 구성
-- "현재 재생 중" 기능을 위한 Spotify 통합 (선택사항)
-- 환경 변수: SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN
 - Vercel 배포 대 로컬 개발을 위해 동적으로 구성되는 사이트 URL
 
 ### 파일 구조 패턴
