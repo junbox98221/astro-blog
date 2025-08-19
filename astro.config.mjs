@@ -19,8 +19,5 @@ const getSiteURL = () => {
 // https://astro.build/config
 export default defineConfig({
   site: getSiteURL(),
-  integrations: [
-    tailwind(),
-    react(),
-  ],
+  integrations: [tailwind(), react()],
 });

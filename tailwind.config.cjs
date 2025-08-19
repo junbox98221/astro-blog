@@ -4,6 +4,16 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          '-apple-system', 'BlinkMacSystemFont',
+          'Pretendard Variable', 'Pretendard',
+          'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
+          'Noto Sans KR', 'Malgun Gothic',
+          'sans-serif',
+          'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'
+        ],
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
