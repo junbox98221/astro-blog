@@ -84,11 +84,6 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
                 
                 <!-- Improved mobile layout for featured post metadata -->
                 <div class="flex items-center gap-3 sm:gap-4 justify-center md:justify-start flex-wrap">
-                  <div class="flex items-center text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-                    <span class="inline-flex items-center">
-                      {sortedPosts[0].data.readingTime || "5 min read"}
-                    </span>
-                  </div>
                   
                   {sortedPosts[0].data.tags && (
                     <div class="flex flex-wrap gap-2 justify-center md:justify-start">
@@ -159,11 +154,6 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
                             day: 'numeric' 
                           })}
                         </time>
-                      )}
-                      {post.data.readingTime && (
-                        <span class="flex items-center">
-                          {post.data.readingTime}
-                        </span>
                       )}
                     </div>
                     
