@@ -154,7 +154,7 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
                     <div class="flex items-center text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 gap-3 sm:gap-4 mb-2 sm:mb-3 justify-center md:justify-start flex-wrap">
                       {post.data.pubDate && (
                         <time datetime={post.data.pubDate.toISOString()} class="flex items-center">
-                          {post.data.pubDate.toLocaleDateString('en-US', { 
+                          {post.data.pubDate.toLocaleDateString('ko-KR', { 
                             month: 'short', 
                             day: 'numeric' 
                           })}
