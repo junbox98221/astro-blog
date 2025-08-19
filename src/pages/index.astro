@@ -20,7 +20,7 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 // Removed unused allTags variable
 ---
 
-<BaseLayout title="JK.dev">
+<BaseLayout title="Blog - JK.dev">
   <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
     <!-- Enhanced header with search - improved responsive spacing -->
     <div class="relative mb-12 sm:mb-20">
@@ -30,11 +30,11 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
       
       <div class="relative text-center">
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">
-          Journal
+          Posts
         </h1>
         
         <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 mb-6 sm:mb-10 max-w-2xl mx-auto">
-          Thoughts, ideas, and explorations on design and technology.
+          전체 글 목록을 확인해보세요.
         </p>
       </div>
     </div>
@@ -59,11 +59,11 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
               
               <div class="flex-1 flex flex-col justify-center">
                 <div class="flex items-center text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 gap-2 mb-3 justify-center md:justify-start">
-                  <span class="font-medium uppercase tracking-wider">Featured</span>
+                  <span class="font-medium uppercase tracking-wider">추천</span>
                   <span class="h-px w-6 sm:w-8 bg-zinc-300 dark:bg-zinc-700"></span>
                   {sortedPosts[0].data.pubDate && (
                     <time datetime={sortedPosts[0].data.pubDate.toISOString()}>
-                      {sortedPosts[0].data.pubDate.toLocaleDateString('en-US', { 
+                      {sortedPosts[0].data.pubDate.toLocaleDateString('ko-KR', { 
                         year: 'numeric', 
                         month: 'long', 
                         day: 'numeric' 
@@ -109,7 +109,7 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
       <!-- Improved sidebar for mobile -->
       <div class="md:col-span-3 relative">
         <div class="md:sticky md:top-24 space-y-4 mb-8 md:mb-0">
-          <h3 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-4 uppercase tracking-wider text-center md:text-left">Archive</h3>
+          <h3 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-4 uppercase tracking-wider text-center md:text-left">보관함</h3>
           
           <!-- Horizontal scrollable archive on mobile, vertical on desktop -->
           <div class="flex md:flex-col overflow-x-auto md:overflow-visible pb-4 md:pb-0 hide-scrollbar">
