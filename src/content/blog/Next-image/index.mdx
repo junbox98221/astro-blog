@@ -1,0 +1,167 @@
+---
+title: 'Next.js Image 최적화 완벽 가이드'
+description: 'LCP 개선을 위한 next/image 활용법과 실제 성능 최적화 경험을 공유합니다. 47% 성능 개선 사례 포함.'
+pubDate: 2024-08-15
+tags: ['Next.js', '성능최적화', '이미지최적화', 'LCP', '웹성능']
+---
+
+import { Image } from 'astro:assets';
+import image1 from './asset/1.png';
+import image2 from './asset/2.png';
+import image3 from './asset/3.png';
+import image4 from './asset/4.png';
+import image5 from './asset/5.png';
+import image6 from './asset/6.png';
+import image7 from './asset/7.png';
+import image8 from './asset/8.png';
+import image9 from './asset/9.png';
+import image10 from './asset/10.png';
+import image11 from './asset/11.png';
+
+웹 서비스의 성능 지표를 개선하는 업무를 하며, LCP 개선을 위해 활용했던 `next/image` 최적화와 `next/image`만으로는 해결되지 않았던 상황에서 어떤 보완 전략을 적용했는지도 함께 공유하려 합니다.
+
+# **1. Next/image 기능**
+
+## 1.1 이미지 포맷 변환
+
+**Next/Image**는 브라우저가 지원하는 이미지 형식을 자동으로 감지해, 더 효율적인 포맷(WebP, AVIF)으로 변환하여 전달합니다.
+
+<Image src={image1} alt="Next.js Image 포맷 변환" quality="max" />
+
+### 동작 원리
+
+브라우저가 이미지를 요청할 때 **Request Header**의 `Accept` 필드에 지원 포맷을 명시합니다.
+
+<Image src={image2} alt="Next.js Image 최적화" />
+
+Next/Image는 이를 분석해 **가장 효율적인 포맷**을 선택하게 됩니다.
+
+## 1.2 사이즈 최적화
+
+Next/image 컴포넌트는 뷰포트에 따라서 적절한 사이즈의 이미지를 요청합니다.
+
+이미지 요청 쿼리를 보면 “**w**”로 요청하는 이미지 너비 정보를 나타내고 있습니다.
+
+<Image src={image3} alt="Next.js Image 사이즈 최적화" />
+
+### 1.2.1 [fill 속성](https://nextjs-ko.org/docs/pages/api-reference/components/image#fill)
+
+하지만 앞서 적절한 사이즈의 이미지를 요청한다고 한 것과는 다르게 뷰포트 너비보다 훨씬 큰 사이즈의 이미지를 요청하고 있습니다.
+
+<Image src={image4} alt="Next.js Image fill 속성" />
+
+이는 fill 속성을 사용하면서 sizes를 미설정했기 때문입니다.
+
+```jsx
+<div style={{ position: 'relative', width: '400px', height: '250px' }}>
+  <Image src="/images/sample.jpg" alt="샘플 이미지" fill />
+</div>
+```
+
+- **fill, sizes 속성이란?**
+  - fill: 이미지 부모 컨테이너를 채우는 속성으로 **반응형 레이아웃, 정확한 이미지 크기를 알 수 없는 경우**에 사용합니다.
+  - sizes: 브라우저가 `srcset` 속성에 있는 여러 이미지 해상도 중 어떤 것을 다운로드해야 할지 결정하는 기준을 제공하는 속성. 미디어 조건에 따라 표시될 이미지의 실제 너비 정보를 알립니다.
+
+`sizes`를 지정하지 않으면 기본값인 `100vw`가 적용되어 브라우저가 화면 전체 너비에 맞춘 큰 이미지를 다운로드하게 됩니다. 이로 인해 실제 표시 크기보다 훨씬 큰 리소스를 불필요하게 로드하게 됩니다.
+
+<Image src={image5} alt="Next.js Image width height 속성" />
+
+따라서 fill 속성을 사용할 때는 반드시 sizes 속성을 지정해 불필요한 대용량 이미지 다운로드를 방지해야 합니다.
+
+```jsx
+<div style={{ position: 'relative', width: '400px', height: '250px' }}>
+  <Image
+    src="/images/sample.jpg"
+    alt="샘플 이미지"
+    fill
+    sizes="(max-width: 768px) 100vw, 
+      (max-width: 1200px) 50vw, 
+      400px"
+  />
+</div>
+```
+
+### 1.2.2 [width, height 속성](https://nextjs-ko.org/docs/pages/api-reference/components/image#width)
+
+만약 `fill`이 아닌 `width`, `height`를 지정하면, 브라우저는 렌더링 전에 이미지 크기(가로×세로)를 확정합니다.
+
+Next/Image는 지정한 `width`를 기준으로 `srcset`을 만들고, 브라우저는 가장 적절한 이미지를 요청하게 됩니다.
+
+```jsx
+<Image src="/images/sample.jpg" alt="샘플 이미지" width={400} height={250} />
+```
+
+<Image src={image6} alt="Next.js Image 캐싱" />
+
+따라서 이미지가 부모 요소에 의해 결정되는 것이 아니고, 가로 & 세로 크기를 정확히 알고 있다면 `fill` 보다는, `width` & `height`을 사용하는 것이 적절합니다.
+
+## 1.3 이미지 캐싱
+
+`Next.js`는 이미지 요청이 들어오면 cache/images 폴더 하위에 최적화된 이미지를 저장합니다.
+
+<Image src={image7} alt="Next.js Image 캐싱" />
+
+이후에는 동일 요청 파라미터의 이미지는 변환 없이 바로 캐시에서 빠르게 반환됩니다.
+
+이미지 요청 응답 시간에서도 차이가 나타납니다.
+
+첫 이미지 요청 시간: 587ms
+
+<Image src={image8} alt="Next.js Image 캐싱" />
+
+캐싱된 이미지 응답 시간: 18ms
+
+<Image src={image9} alt="Next.js Image 캐싱" />
+
+## 1.4 [lazy load](https://nextjs-ko.org/docs/pages/api-reference/components/image#loading)
+
+lazy load란, 화면에 보이지 않는 이미지를 나중에 로드하는 기능입니다.
+
+Next/Image는 기본적으로 **lazy load**가 활성화되어 있습니다.
+
+초기 페이지 로딩 속도를 향상 시키지만 `LCP`에 해당되는 이미지에 적용되면 다운로드 시점이 늦어져 성능 점수가 떨어질 수 있습니다.
+
+따라서 LCP 이미지에는 `priority` 속성을 사용해야 합니다.
+
+## 1.5 [priority](https://nextjs-ko.org/docs/pages/api-reference/components/image#priority)
+
+이미지의 로딩 우선순위를 높이는 속성입니다.
+
+주로 LCP(Largest Contentful Paint) 이미지에 사용됩니다.
+
+`priority`가 설정된 이미지는 브라우저가 가능한 한 빨리 다운로드하도록 Next.js가 HTML에 `link` 태그를 `preload`으로 추가합니다.
+
+하지만, `priority` 속성을 추가하더라도 `LCP 이미지` 를 빠르게 다운로드하진 못하는 경우가 존재했고, 이를 어떻게 해결했는지 아래에서 이야기해 보겠습니다.
+
+# **2. Priority가 통하지 않는 경우**
+
+문제 상황은 LCP 요소가 팝업 속 이미지였던 케이스였습니다.
+
+으레 그렇듯, 팝업의 경우는 "다시 보지 않기" 옵션을 제공했는데 이 옵션은 `localStorage`에 저장되었습니다.
+
+<Image src={image10} alt="팝업" width={400} />
+
+문제의 원인은 클라이언트 단에서 localStorage 값을 먼저 확인한 뒤에야 팝업을 렌더링한다는 점이었습니다. LCP로 지정된 이미지는 priority 속성을 주더라도
+
+1. localStorage 조회
+2. 조건 분기
+3. 팝업 컴포넌트 렌더링
+
+이후에야 로드되었고, 그 결과 이미지 다운로드 시점이 지나치게 늦어져 LCP 점수가 크게 하락했습니다.
+
+이처럼 렌더링 자체가 늦어지는 경우에는 next/image만으로는 문제를 해결할 수 없었습니다. 따라서 저는 **이미지 자체의 최적화**뿐 아니라 **렌더링 타이밍을 앞당기는 전략**을 병행해야 했습니다.
+
+이를 해결하기 위해 클라이언트 상태인 `localStorage` 와는 무관하게 `<head>`에 `<link rel="preload" as="image">`를 먼저 삽입하였습니다.
+
+<Image src={image11} alt="다운로드 비교" />
+
+이를 통해 최종적으로 **LCP를 3.4초 → 1.8초로 47% 개선**할 수 있었습니다.
+
+# **3. 결론**
+
+`Next/image`는 자동 포맷 변환, 사이즈 최적화, 캐싱, 지연 로딩 등 웹 성능 개선을 위한 강력한 기능을 제공하지만, 제 기능을 발휘하려면 올바른 이해와 사용이 전제되어야 합니다.
+
+- `fill` 속성 사용 시 `sizes`를 반드시 지정해 불필요한 대용량 이미지 다운로드 방지
+- 클라이언트 상태에 의존하는 LCP 이미지는 `priority` 속성만으로는 빠르게 로드되지 않음
+
+이처럼, 상황과 구조에 맞는 설정과 전략을 적용해야만 **진정한 성능 최적화**를 달성할 수 있습니다.
