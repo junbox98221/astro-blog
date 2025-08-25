@@ -301,8 +301,9 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
       toggleBackToTopButton(); // Initial check
     }
     
-    // Add smooth scrolling to year links
-    document.querySelectorAll('a[href^="#year-"]').forEach(anchor => {
+    // Add smooth scrolling to year links (only if not already handled)
+    document.querySelectorAll('a[href^="#year-"]:not([data-scroll-handled])').forEach(anchor => {
+      anchor.setAttribute('data-scroll-handled', 'true');
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');

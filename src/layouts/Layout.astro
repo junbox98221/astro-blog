@@ -175,8 +175,10 @@ const { title, description = 'JK.dev - 개발 블로그 & 기술 저널' } = Ast
               })
             );
 
-            // Scroll to top or to saved position
-            window.scrollTo(0, 0);
+            // Only scroll to top if it's not an anchor link navigation
+            if (!url.includes('#')) {
+              window.scrollTo(0, 0);
+            }
 
             // Re-attach event listeners to new content
             attachLinkListeners();
