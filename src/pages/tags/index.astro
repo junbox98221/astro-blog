@@ -66,7 +66,7 @@ const sortedTags = [...tagObjects].sort((a, b) => b.count - a.count);
           <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-3 sm:mb-4 md:mb-6 lg:mb-8 text-center theme-transition-color">인기 주제</h2>
           
           <!-- Ultra-responsive grid layout with fallbacks -->
-          <div class="grid grid-cols-2 xxxs:grid-cols-2 xxs:grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5 xxxs:gap-2 xxs:gap-2 xs:gap-2 sm:gap-3 md:gap-4 w-full auto-rows-fr">
+          <div class="grid grid-cols-1 gap-1.5  sm:grid-cols-3 w-full auto-rows-fr">
             {sortedTags.map((tag) => (
               <a 
                 href={`/tags/${tag.name}`}
